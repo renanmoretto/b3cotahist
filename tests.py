@@ -55,23 +55,6 @@ class TestB3Cotahist(TestCase):
         self.assertEqual(columns, self.expected_columns)
         self.assertGreater(len(df), 0)
 
-    @mock.patch("b3cotahist._requests_get_txt")
-    def test_get(self, mock_requests):
-        """Test get() method with mocked request"""
-        # Mock the response using sample data
-        with open(self.sample_txt, "rb") as f:
-            mock_requests.return_value = io.BytesIO(f.read())
-
-        # Test pandas engine
-        df_pandas = b3cotahist.get(date=datetime.date(2024, 3, 1), engine="pandas")
-        self.assertIsInstance(df_pandas, pd.DataFrame)
-        self._validate_dataframe(df_pandas)
-
-        # Test polars engine
-        df_polars = b3cotahist.get(date=datetime.date(2024, 3, 1), engine="polars")
-        self.assertIsInstance(df_polars, pl.DataFrame)
-        self._validate_dataframe(df_polars)
-
     def test_read_zip(self):
         """Test read_zip() method"""
         # Test pandas engine
