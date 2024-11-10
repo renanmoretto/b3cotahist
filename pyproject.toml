@@ -10,6 +10,14 @@ dependencies = [
     "requests>=2.32.3",
 ]
 
+[tool.poetry]
+name = "b3cotahist"
+version = "0.1.10"
+description = "Uma biblioteca simples para facilitar a leitura e o parsing do arquivo COTAHIST da B3."
+authors = ["renanmoretto <himynameisrenan@outlook.com>"]
+readme = "README.md"
+repository = "https://github.com/renanmoretto/b3cotahist"
+
 [tool.uv]
 dev-dependencies = [
     "ipykernel>=6.29.5",
