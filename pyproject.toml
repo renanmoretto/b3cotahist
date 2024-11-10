@@ -1,6 +1,6 @@
 [project]
 name = "b3cotahist"
-version = "0.1.0"
+version = "0.1.1"
 description = "Uma biblioteca simples para facilitar a leitura e o parsing do arquivo COTAHIST da B3"
 readme = "README.md"
 requires-python = ">=3.10"
