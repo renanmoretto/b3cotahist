@@ -233,6 +233,22 @@ def get(
     engine: Literal["pandas", "polars"] = "pandas",
     raise_ssl_error: bool = False,
 ) -> pd.DataFrame | pl.DataFrame:
+    """Obtém dados históricos da B3 para uma data específica via download.
+
+    Params
+    ----------
+    date : datetime.date
+        Data para a qual os dados devem ser obtidos.
+    engine : {"pandas", "polars"}, default="pandas"
+        Engine de processamento a ser utilizado.
+    raise_ssl_error : bool, default=False
+        Se True, levanta erros de SSL durante o download.
+
+    Returns
+    -------
+    pandas.DataFrame ou polars.DataFrame
+        DataFrame contendo os dados históricos da B3.
+    """
     _check_engine(engine)
     bytes_data = _requests_get_txt(date, raise_ssl_error=raise_ssl_error)
     df_polars = _read_bytes(bytes_data)
@@ -246,6 +262,20 @@ def read_bytes(
     data: bytes | io.BytesIO,
     engine: Literal["pandas", "polars"] = "pandas",
 ) -> pd.DataFrame | pl.DataFrame:
+    """Lê dados históricos da B3 a partir de bytes ou BytesIO.
+
+    Params
+    ----------
+    data : bytes ou io.BytesIO
+        Dados em formato bytes ou BytesIO contendo o arquivo da B3.
+    engine : {"pandas", "polars"}, default="pandas"
+        Engine de processamento a ser utilizado.
+
+    Returns
+    -------
+    pandas.DataFrame ou polars.DataFrame
+        DataFrame contendo os dados históricos da B3.
+    """
     _check_engine(engine)
     df_polars = _read_bytes(data)
 
@@ -258,6 +288,20 @@ def read_zip(
     path: str | Path,
     engine: Literal["pandas", "polars"] = "pandas",
 ) -> pd.DataFrame | pl.DataFrame:
+    """Lê dados históricos da B3 a partir de um arquivo ZIP.
+
+    Params
+    ----------
+    path : str ou Path
+        Caminho para o arquivo ZIP contendo os dados da B3.
+    engine : {"pandas", "polars"}, default="pandas"
+        Engine de processamento a ser utilizado.
+
+    Returns
+    -------
+    pandas.DataFrame ou polars.DataFrame
+        DataFrame contendo os dados históricos da B3.
+    """
     _check_engine(engine)
     with zipfile.ZipFile(path) as thezip:
         df_polars = _read_bytes(io.BytesIO(_get_txt_from_zip(thezip)))
@@ -271,6 +315,20 @@ def read_txt(
     path: str | Path,
     engine: Literal["pandas", "polars"] = "pandas",
 ) -> pd.DataFrame | pl.DataFrame:
+    """Lê dados históricos da B3 a partir de um arquivo TXT.
+
+    Params
+    ----------
+    path : str ou Path
+        Caminho para o arquivo TXT contendo os dados da B3.
+    engine : {"pandas", "polars"}, default="pandas"
+        Engine de processamento a ser utilizado.
+
+    Returns
+    -------
+    pandas.DataFrame ou polars.DataFrame
+        DataFrame contendo os dados históricos da B3.
+    """
     _check_engine(engine)
     if isinstance(path, str):
         path = Path(path)
