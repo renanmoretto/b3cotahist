@@ -173,8 +173,16 @@ def _requests_get_txt(date: datetime.date, raise_ssl_error: bool = False) -> io.
         return _get_txt_from_zip(thezip)
 
 
+def _requests_get_txt_anual(year: int, raise_ssl_error: bool = False) -> io.BytesIO:
+    url = f"https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A{year}.ZIP"
+    r = requests.get(url, verify=raise_ssl_error)
+    r.raise_for_status()
+    with zipfile.ZipFile(io.BytesIO(r.content)) as thezip:
+        return _get_txt_from_zip(thezip)
+
+
 def _read_bytes(bytes_data: io.BytesIO) -> pl.DataFrame:
-    df = pl.read_csv(
+    df_raw = pl.read_csv(
         bytes_data,
         has_header=False,
         new_columns=["full_str"],
@@ -189,7 +197,7 @@ def _read_bytes(bytes_data: io.BytesIO) -> pl.DataFrame:
         start += width
 
     df = (
-        df.with_columns(
+        df_raw.with_columns(
             [
                 pl.col("full_str")
                 .str.slice(slice_tuple[0], slice_tuple[1])
@@ -201,10 +209,10 @@ def _read_bytes(bytes_data: io.BytesIO) -> pl.DataFrame:
         .drop(["full_str"])
         .slice(1, -1)  # dropa cabeçalho erodapé
         .with_columns(
-            pl.col(DATE_COLUMNS).str.to_date(format="%Y%m%d"),
-            pl.col(FLOAT32_COLUMNS).cast(pl.Float32) / 100,
-            pl.col(FLOAT64_COLUMNS).cast(pl.Float64),
-            pl.col(UINT32_COLUMNS).cast(pl.UInt32, strict=False),
+            pl.col(DATE_COLUMNS).replace("", None).str.to_date(format="%Y%m%d"),
+            pl.col(FLOAT32_COLUMNS).replace("", None).cast(pl.Float32) / 100,
+            pl.col(FLOAT64_COLUMNS).replace("", None).cast(pl.Float64),
+            pl.col(UINT32_COLUMNS).replace("", None).cast(pl.UInt32, strict=False),
             pl.col("CODIGO_BDI").map_elements(
                 lambda x: CODBDI.get(x, x), return_dtype=str
             ),
@@ -226,6 +234,37 @@ def _check_engine(
     if engine not in ["pandas", "polars"]:
         raise ValueError("engine must be either 'pandas' or 'polars'")
     return engine
+
+
+def get_anual(
+    year: int,
+    engine: Literal["pandas", "polars"] = "pandas",
+    raise_ssl_error: bool = False,
+) -> pd.DataFrame | pl.DataFrame:
+    """Obtém dados históricos da B3 de todo o ano especificado.
+    Para dados antes de 2014, a B3 não tem mais arquivos diários, apenas anuais..
+
+    Params
+    ----------
+    year : int
+        Ano para o qual os dados devem ser obtidos.
+    engine : {"pandas", "polars"}, default="pandas"
+        Engine de processamento a ser utilizado.
+    raise_ssl_error : bool, default=False
+        Se True, levanta erros de SSL durante o download.
+
+    Returns
+    -------
+    pandas.DataFrame ou polars.DataFrame
+        DataFrame contendo os dados históricos da B3.
+    """
+    _check_engine(engine)
+    bytes_data = _requests_get_txt_anual(year, raise_ssl_error=raise_ssl_error)
+    df_polars = _read_bytes(bytes_data)
+
+    if engine == "pandas":
+        return df_polars.to_pandas()
+    return df_polars
 
 
 def get(
