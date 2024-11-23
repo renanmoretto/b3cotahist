@@ -10,23 +10,20 @@ pip install b3cotahist
 
 ## Uso
 
-### Download direto da B3
+### Fetch da B3
 
 ```python
 import datetime
 import b3cotahist
 
-# Download dos dados do pregão de 01/03/2024
-df = b3cotahist.get(
-    date=datetime.date(2024, 3, 1),
-    engine='pandas'  # ou 'polars'
-)
+# Fetch dos dados do pregão de 01/03/2024
+
+date = datetime.date(2024, 3, 1)
+
+df = b3cotahist.get(date) # engine='pandas' (default) ou 'polars'
 
 # Caso tenha problemas com SSL da b3
-df = b3cotahist.get(
-    date=datetime.date(2024, 3, 1),
-    raise_ssl_error=True
-)
+df = b3cotahist.get(date, raise_ssl_error=False)
 ```
 
 ### Leitura de arquivos
