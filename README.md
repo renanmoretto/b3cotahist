@@ -1,6 +1,6 @@
 # b3cotahist
 
-Biblioteca Python para leitura e fetch do arquivo COTAHIST da B3. Suporta tanto pandas quanto polars como engines.
+Biblioteca Python para leitura e fetch do arquivo COTAHIST da B3.
 
 ## Instalação
 
@@ -20,7 +20,7 @@ import b3cotahist
 
 date = datetime.date(2024, 3, 1)
 
-df = b3cotahist.get(date) # engine='pandas' (default) ou 'polars'
+df = b3cotahist.get(date)
 
 # Caso tenha problemas com SSL da b3
 df = b3cotahist.get(date, raise_ssl_error=False)
@@ -34,7 +34,7 @@ df = b3cotahist.read_zip(path='COTAHIST_D20240301.ZIP')
 df = b3cotahist.read_txt(path='COTAHIST_D20240301.TXT')
 
 # Ou caso queira usar polars
-df = b3cotahist.read_zip(path='COTAHIST_D20240301.ZIP', engine='polars')
+df = b3cotahist.read_zip(path='COTAHIST_D20240301.ZIP')
 ```
 
 ### Leitura de bytes
