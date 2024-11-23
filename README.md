@@ -32,9 +32,6 @@ df = b3cotahist.get(date, raise_ssl_error=False)
 df = b3cotahist.read_zip(path='COTAHIST_D20240301.ZIP')
 
 df = b3cotahist.read_txt(path='COTAHIST_D20240301.TXT')
-
-# Ou caso queira usar polars
-df = b3cotahist.read_zip(path='COTAHIST_D20240301.ZIP')
 ```
 
 ### Leitura de bytes
