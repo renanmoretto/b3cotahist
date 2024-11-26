@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "b3cotahist"
-version = "0.1.8"
+version = "0.1.9"
 description = "Biblioteca Python para leitura e fetch do arquivo COTAHIST da B3. Suporta tanto pandas quanto polars como engines."
 authors = ["renanmoretto <himynameisrenan@outlook.com>"]
 readme = "README.md"
