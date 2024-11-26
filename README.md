@@ -24,6 +24,9 @@ df = b3cotahist.get(date)
 
 # Caso tenha problemas com SSL da b3
 df = b3cotahist.get(date, raise_ssl_error=False)
+
+# A B3 também disponibiliza dados consolidados por ano
+df = b3cotahist.get_year(2024)
 ```
 
 ### Leitura de arquivos

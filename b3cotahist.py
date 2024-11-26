@@ -226,7 +226,7 @@ def _read_bytes(bytes_data: io.BytesIO) -> pl.DataFrame:
     return df
 
 
-def get_anual(year: int, raise_ssl_error: bool = False) -> pd.DataFrame:
+def get_year(year: int, raise_ssl_error: bool = False) -> pd.DataFrame:
     """Obtém dados históricos da B3 de todo o ano especificado.
     Para dados antes de 2014, a B3 não tem mais arquivos diários, apenas anuais..
 
