@@ -1,6 +1,6 @@
 # b3cotahist
 
-Biblioteca Python para leitura e fetch do arquivo COTAHIST da B3.
+Biblioteca Python para fetch e leitura do arquivo COTAHIST da B3.
 
 ## Instalação
 
