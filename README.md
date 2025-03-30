@@ -1,3 +1,5 @@
+## Esse repositório foi arquivado, o módulo agora faz parte do projeto [finbr](https://github.com/renanmoretto/finbr).
+    
 # b3cotahist
 
 Biblioteca Python para fetch e leitura do arquivo COTAHIST da B3.
